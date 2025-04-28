@@ -2,6 +2,7 @@ package com.example.framework
 
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         game?.let { g ->
             g.actualScreen = FirstScreen(g)
         }
+
+        val callback = onBackPressedDispatcher.addCallback(this) {
+            game?.backPressed()
+        }
     }
 
     override fun onPause() {
@@ -38,8 +43,4 @@ class MainActivity : AppCompatActivity() {
         game?.onResume()
     }
 
-//    override fun onBackPressed() {
-//
-//        super.onBackPressed()
-//    }
 }

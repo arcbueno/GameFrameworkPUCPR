@@ -3,6 +3,7 @@ package com.example.framework
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 
 class Ball(var x: Float, var y: Float) {
     var limitTopLeft: Coordinate = Coordinate(0f, 0f)
@@ -29,33 +30,24 @@ class Ball(var x: Float, var y: Float) {
             Direction.RIGHT -> updateX(et)
         }
         currentCoordinate = Coordinate(x, y)
-
     }
+
     private fun updateX(et: Float) {
-        if(direction == Direction.LEFT) {
+        Log.v("Elapsed Time", et.toString())
+
+        if (direction == Direction.LEFT) {
             x -= vel * et / 1000f
-            if (x < limitTopLeft.x) {
-                x = limitTopLeft.x
-            }
         } else {
             x += vel * et / 1000f
-            if (x > limitBottomRight.x) {
-                x = limitBottomRight.x
-            }
         }
-
+        Log.v("Position x", x.toString())
     }
+
     private fun updateY(et: Float) {
-        if(direction == Direction.UP) {
+        if (direction == Direction.UP) {
             y -= vel * et / 1000f
-            if (y < limitTopLeft.y) {
-                y = limitTopLeft.y
-            }
         } else {
             y += vel * et / 1000f
-            if (y > limitBottomLeft.y) {
-                y = limitBottomLeft.y
-            }
         }
     }
 

@@ -8,7 +8,7 @@ import android.view.MotionEvent
 
 class SecondScreen(private val game: Game) : Screen(game) {
 
-    private var ball: Ball
+    private var snake: Snake
     private var music: Music? = null
     private var points: Int = 0
     private var food: Ball? = null
@@ -31,13 +31,13 @@ class SecondScreen(private val game: Game) : Screen(game) {
         music?.setVolume(1f)
         music?.play()
 
-        ball = Ball(0f, 300f)
+        snake = Snake(0f, 300f)
 
         topButton = Button(
             Coordinate((canvas.width / 2) - 100f, canvas.height - 400f),
             Coordinate((canvas.width / 2) + 100f, canvas.height - 300f),
             Color.DKGRAY,
-            { ball.setNewDirection(Direction.UP) },
+            { snake.setNewDirection(Direction.UP) },
             "CIMA"
         )
 
@@ -45,21 +45,21 @@ class SecondScreen(private val game: Game) : Screen(game) {
             Coordinate((canvas.width / 2) - 100f, canvas.height - 200f),
             Coordinate((canvas.width / 2) + 100f, canvas.height - 100f),
             Color.DKGRAY,
-            { ball.setNewDirection(Direction.DOWN) },
+            { snake.setNewDirection(Direction.DOWN) },
             "BAIXO"
         )
         leftButton = Button(
             Coordinate((canvas.width / 2) - 415f, canvas.height - 300f),
             Coordinate((canvas.width / 2) - 150f, canvas.height - 200f),
             Color.DKGRAY,
-            { ball.setNewDirection(Direction.LEFT) },
+            { snake.setNewDirection(Direction.LEFT) },
             "ESQUERDA"
         )
         rightButton = Button(
             Coordinate((canvas.width / 2) + 150f, canvas.height - 300f),
             Coordinate((canvas.width / 2) + 400f, canvas.height - 200f),
             Color.DKGRAY,
-            { ball.setNewDirection(Direction.RIGHT) },
+            { snake.setNewDirection(Direction.RIGHT) },
             "DIREITA"
         )
 
@@ -76,7 +76,7 @@ class SecondScreen(private val game: Game) : Screen(game) {
 
     override fun update(et: Float) {
         elapsedTime = et
-        ball.update(et)
+        snake.update(et)
     }
 
 
@@ -100,18 +100,18 @@ class SecondScreen(private val game: Game) : Screen(game) {
         exitButton.onDraw(canvas, paint)
 
         food?.render(canvas, Color.RED)
-        ball.render(canvas)
+        snake.render(canvas)
 
         readScreen()
     }
 
     private fun readScreen() {
-        if (food != null && ball.currentCoordinate.isNearby(food!!.currentCoordinate, 50f)) {
+        if (food != null && snake.currentCoordinate.isNearby(food!!.currentCoordinate, 50f)) {
             onEat()
         }
-        if( (ball.x <= 0f || ball.x >= canvas.width.toFloat() || ball.y <= 0f || ball.y >= canvas.height.toFloat())) {
-            game.actualScreen = ThirdScreen(game)
-        }
+//        if( (snake.x <= 0f || snake.x >= canvas.width.toFloat() || snake.y <= 0f || snake.y >= canvas.height.toFloat())) {
+//            game.actualScreen = ThirdScreen(game)
+//        }
     }
 
     override fun handleEvent(event: Int, x: Float, y: Float) {
@@ -141,6 +141,7 @@ class SecondScreen(private val game: Game) : Screen(game) {
         points++
         food = null
         generateNewFoodPosition()
+        snake.onEat()
     }
 
     private fun generateNewFoodPosition() {
@@ -148,10 +149,10 @@ class SecondScreen(private val game: Game) : Screen(game) {
         val y = (Math.random() * (canvas.height - 100)).toFloat()
         paint.color = Color.RED
         food = Ball(x, y)
-        food?.limitTopLeft = ball.limitTopLeft
-        food?.limitTopRight = ball.limitTopRight
-        food?.limitBottomLeft = ball.limitBottomLeft
-        food?.limitBottomRight = ball.limitBottomRight
+//        food?.limitTopLeft = snake.limitTopLeft
+//        food?.limitTopRight = snake.limitTopRight
+//        food?.limitBottomLeft = snake.limitBottomLeft
+//        food?.limitBottomRight = snake.limitBottomRight
     }
 
     override fun onPause() {

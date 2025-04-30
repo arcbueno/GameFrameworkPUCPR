@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 
-class Ball(var x: Float, var y: Float) {
+open class Ball(var x: Float, var y: Float) {
     var limitTopLeft: Coordinate = Coordinate(0f, 0f)
     var limitTopRight: Coordinate = Coordinate(0f, 0f)
     var limitBottomLeft: Coordinate = Coordinate(0f, 0f)
@@ -22,32 +22,30 @@ class Ball(var x: Float, var y: Float) {
         paint.setColor(Color.RED)
     }
 
-    fun update(et: Float) {
+     fun update(et: Float, margin: Float = 0f) {
         when (direction) {
-            Direction.UP -> updateY(et)
-            Direction.DOWN -> updateY(et)
-            Direction.LEFT -> updateX(et)
-            Direction.RIGHT -> updateX(et)
+            Direction.UP -> updateY(et, margin)
+            Direction.DOWN -> updateY(et, margin)
+            Direction.LEFT -> updateX(et, margin)
+            Direction.RIGHT -> updateX(et, margin)
         }
         currentCoordinate = Coordinate(x, y)
     }
 
-    private fun updateX(et: Float) {
-        Log.v("Elapsed Time", et.toString())
+    private fun updateX(et: Float, margin: Float = 0f) {
 
         if (direction == Direction.LEFT) {
-            x -= vel * et / 1000f
+            x -= (vel * et / 1000f) + margin
         } else {
-            x += vel * et / 1000f
+            x += (vel * et / 1000f) - margin
         }
-        Log.v("Position x", x.toString())
     }
 
-    private fun updateY(et: Float) {
+    private fun updateY(et: Float, margin: Float = 0f) {
         if (direction == Direction.UP) {
-            y -= vel * et / 1000f
+            y -= (vel * et / 1000f) + margin
         } else {
-            y += vel * et / 1000f
+            y += (vel * et / 1000f) - margin
         }
     }
 
@@ -55,9 +53,9 @@ class Ball(var x: Float, var y: Float) {
         this.direction = direction
     }
 
-    fun render(canvas: Canvas, initialColor: Int? = null) {
+     fun render(canvas: Canvas, initialColor: Int? = null, customSize: Float? = null, customX: Float? = null, customY: Float? = null) {
         paint.color = initialColor ?: Color.GREEN
-        canvas.drawCircle(x, y, 50f, paint)
+        canvas.drawCircle(customX?:x, customY?:y,  customSize ?: 50f, paint)
         limitTopLeft = Coordinate(0f, 0f)
         limitTopRight = Coordinate(canvas.width.toFloat(), 0f)
         limitBottomLeft = Coordinate(0f, canvas.height.toFloat())

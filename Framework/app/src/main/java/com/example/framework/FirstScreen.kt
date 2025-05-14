@@ -34,40 +34,23 @@ class FirstScreen(private val game: Game) : Screen(game) {
     private fun drawSnake(){
 
         paint.color = snakeBodyColor
-        canvas.drawCircle(canvas.width/2f, canvas.height/2f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-50f, canvas.height/2f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-100f, canvas.height/2f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f, 50f, paint)
+        for (i in 0..200 step 50) {
+            canvas.drawCircle(canvas.width / 2f - i, canvas.height / 2f, 50f, paint)
+        }
         paint.color = Color.GREEN
         canvas.drawCircle(canvas.width/2f, canvas.height/2f+50f, 50f, paint)
         paint.color = Color.RED
         canvas.drawCircle(canvas.width/2f, canvas.height/2f+100f, 15f, paint)
         paint.color = snakeBodyColor
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+50f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+100f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+150f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+200f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+250f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+300f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-50f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-100f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+50f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+100f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+150f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+350f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+300f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+250f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+200f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+150f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+100f, 50f, paint)
-        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+50f, 50f, paint)
+        for (i in 0..350 step 50) {
+            canvas.drawCircle(canvas.width / 2f - 200f, canvas.height / 2f + i, 50f, paint)
+        }
+        for (i in -150..200 step 50) {
+            canvas.drawCircle(canvas.width / 2f + i, canvas.height / 2f + 350f, 50f, paint)
+        }
+        for (i in 300 downTo 50 step 50) {
+            canvas.drawCircle(canvas.width / 2f + 200f, canvas.height / 2f + i, 50f, paint)
+        }
     }
 
     override fun handleEvent(event: Int, x: Float, y: Float) {

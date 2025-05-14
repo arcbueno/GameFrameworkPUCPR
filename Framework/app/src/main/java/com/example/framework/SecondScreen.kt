@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 import android.view.MotionEvent
+import kotlin.math.abs
 
 class SecondScreen(private val game: Game) : Screen(game) {
 
@@ -12,12 +13,10 @@ class SecondScreen(private val game: Game) : Screen(game) {
     private var music: Music? = null
     private var points: Int = 0
     private var food: Ball? = null
-    private var topButton: Button
-    private var bottomButton: Button
-    private var leftButton: Button
-    private var rightButton: Button
     private var exitButton: Button
     private var elapsedTime = 0f
+    private val backgroundColor = Color.BLUE
+    private var tounchCoordinate: Coordinate? = null
 
     init {
         paint.color = Color.BLUE
@@ -32,36 +31,6 @@ class SecondScreen(private val game: Game) : Screen(game) {
         music?.play()
 
         snake = Snake(0f, 300f)
-
-        topButton = Button(
-            Coordinate((canvas.width / 2) - 100f, canvas.height - 400f),
-            Coordinate((canvas.width / 2) + 100f, canvas.height - 300f),
-            Color.DKGRAY,
-            { snake.setNewDirection(Direction.UP) },
-            "CIMA"
-        )
-
-        bottomButton = Button(
-            Coordinate((canvas.width / 2) - 100f, canvas.height - 200f),
-            Coordinate((canvas.width / 2) + 100f, canvas.height - 100f),
-            Color.DKGRAY,
-            { snake.setNewDirection(Direction.DOWN) },
-            "BAIXO"
-        )
-        leftButton = Button(
-            Coordinate((canvas.width / 2) - 415f, canvas.height - 300f),
-            Coordinate((canvas.width / 2) - 150f, canvas.height - 200f),
-            Color.DKGRAY,
-            { snake.setNewDirection(Direction.LEFT) },
-            "ESQUERDA"
-        )
-        rightButton = Button(
-            Coordinate((canvas.width / 2) + 150f, canvas.height - 300f),
-            Coordinate((canvas.width / 2) + 400f, canvas.height - 200f),
-            Color.DKGRAY,
-            { snake.setNewDirection(Direction.RIGHT) },
-            "DIREITA"
-        )
 
         exitButton = Button(
             Coordinate(15f, 15f),
@@ -92,11 +61,6 @@ class SecondScreen(private val game: Game) : Screen(game) {
         paint.textAlign = Paint.Align.CENTER
         canvas.drawText("Pontos: $points", canvas.width - 250f, 100f, paint)
 
-
-        topButton.onDraw(canvas, paint)
-        bottomButton.onDraw(canvas, paint)
-        leftButton.onDraw(canvas, paint)
-        rightButton.onDraw(canvas, paint)
         exitButton.onDraw(canvas, paint)
 
         food?.render(canvas, Color.RED)
@@ -115,25 +79,34 @@ class SecondScreen(private val game: Game) : Screen(game) {
     }
 
     override fun handleEvent(event: Int, x: Float, y: Float) {
-        Log.v("Position y", y.toString())
-        Log.v("Position x", x.toString())
+//        Log.v("Position y", y.toString())
+//        Log.v("Position x", x.toString())
+        Log.v("TOUCH","onTouch: " + MotionEvent.actionToString(event))
 
         if (event == MotionEvent.ACTION_DOWN) {
-            if (leftButton.isInside(x, y)) {
-                leftButton.onTap()
+            tounchCoordinate = Coordinate(x, y)
+        }
+        if(event == MotionEvent.ACTION_MOVE){
+            val newCoordinate = Coordinate(x, y)
+            if (tounchCoordinate != null) {
+                val deltaX = newCoordinate.x - tounchCoordinate!!.x
+                val deltaY = newCoordinate.y - tounchCoordinate!!.y
+
+                if (abs(deltaX) > abs(deltaY)) {
+                    if (deltaX > 0) {
+                        snake.setNewDirection(Direction.RIGHT)
+                    } else {
+                        snake.setNewDirection(Direction.LEFT)
+                    }
+                } else {
+                    if (deltaY > 0) {
+                        snake.setNewDirection(Direction.DOWN)
+                    } else {
+                        snake.setNewDirection(Direction.UP)
+                    }
+                }
             }
-            if (rightButton.isInside(x, y)) {
-                rightButton.onTap()
-            }
-            if (topButton.isInside(x, y)) {
-                topButton.onTap()
-            }
-            if (bottomButton.isInside(x, y)) {
-                bottomButton.onTap()
-            }
-            if (exitButton.isInside(x, y)) {
-                exitButton.onTap()
-            }
+            tounchCoordinate = newCoordinate
         }
     }
 
@@ -149,10 +122,6 @@ class SecondScreen(private val game: Game) : Screen(game) {
         val y = (Math.random() * (canvas.height - 100)).toFloat()
         paint.color = Color.RED
         food = Ball(x, y)
-//        food?.limitTopLeft = snake.limitTopLeft
-//        food?.limitTopRight = snake.limitTopRight
-//        food?.limitBottomLeft = snake.limitBottomLeft
-//        food?.limitBottomRight = snake.limitBottomRight
     }
 
     override fun onPause() {

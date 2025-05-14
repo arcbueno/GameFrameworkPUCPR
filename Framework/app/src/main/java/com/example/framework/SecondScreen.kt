@@ -109,9 +109,9 @@ class SecondScreen(private val game: Game) : Screen(game) {
         if (food != null && snake.currentCoordinate.isNearby(food!!.currentCoordinate, 50f)) {
             onEat()
         }
-//        if( (snake.x <= 0f || snake.x >= canvas.width.toFloat() || snake.y <= 0f || snake.y >= canvas.height.toFloat())) {
-//            game.actualScreen = ThirdScreen(game)
-//        }
+        if( (snake.x <= 0f || snake.x >= canvas.width.toFloat() || snake.y <= 0f || snake.y >= canvas.height.toFloat())) {
+            game.actualScreen = ThirdScreen(game)
+        }
     }
 
     override fun handleEvent(event: Int, x: Float, y: Float) {

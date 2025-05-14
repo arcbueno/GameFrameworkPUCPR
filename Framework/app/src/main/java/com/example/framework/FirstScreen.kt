@@ -3,9 +3,10 @@ package com.example.framework
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.MotionEvent
+import androidx.core.graphics.toColorInt
 
 class FirstScreen(private val game: Game) : Screen(game) {
-
+    private val snakeBodyColor = "#a3e598".toColorInt()
     init {
         paint.typeface = Fonts.chalkboard
         paint.textAlign = Paint.Align.CENTER
@@ -18,15 +19,55 @@ class FirstScreen(private val game: Game) : Screen(game) {
     }
 
     override fun draw() {
-        canvas.drawColor(Color.BLACK)
-        paint.color = Color.WHITE
+        canvas.drawColor("#249d00".toColorInt())
+        paint.color = Color.BLACK
         paint.textSize = 100f
-        canvas.drawText("Toque para iniciar!!!", canvas.width/2f, 100f, paint)
-        paint.color = Color.GREEN
-        canvas.drawRect(300f, 300f, 780f, 1500f, paint)
-        paint.color = Color.WHITE
+        canvas.drawText("Snake_Case", canvas.width/2f, 300f, paint)
+        paint.textSize = 50f
+        canvas.drawText("Toque para começar", canvas.width/2f, 600f, paint)
+        drawSnake()
+        paint.color = Color.DKGRAY
         paint.textSize = 30f
-        canvas.drawText("Copyright FrameWork 2025", canvas.width/2f, 1700f, paint)
+        canvas.drawText("Copyright Snake_Case 2025", canvas.width/2f, 1700f, paint)
+    }
+
+    private fun drawSnake(){
+
+        paint.color = snakeBodyColor
+        canvas.drawCircle(canvas.width/2f, canvas.height/2f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-50f, canvas.height/2f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-100f, canvas.height/2f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f, 50f, paint)
+        paint.color = Color.GREEN
+        canvas.drawCircle(canvas.width/2f, canvas.height/2f+50f, 50f, paint)
+        paint.color = Color.RED
+        canvas.drawCircle(canvas.width/2f, canvas.height/2f+100f, 15f, paint)
+        paint.color = snakeBodyColor
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+50f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+100f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+150f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+200f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+250f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+300f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-50f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-100f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-150f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f-200f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+50f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+100f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+150f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+350f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+300f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+250f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+200f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+150f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+100f, 50f, paint)
+        canvas.drawCircle(canvas.width/2f+200f, canvas.height/2f+50f, 50f, paint)
     }
 
     override fun handleEvent(event: Int, x: Float, y: Float) {

@@ -11,9 +11,6 @@ class Snake(x: Float, y: Float) {
     private var coordinatesBeforeTurn = Coordinate(0f, 0f)
     private var startedTurn = false
     private var isUpdating = false
-//    private val coordinatesDirectionsToTurn: MutableMap<Coordinate, Direction> = mutableMapOf()
-    // Criar lista de funções que devem ser executadas caso alguma esteja sendo executada
-    // Criar booleano indicando se existe alguma função sendo executada no momento
     init {
         if(body.isEmpty()){
             body.add(Ball(x, y))
@@ -83,17 +80,6 @@ class Snake(x: Float, y: Float) {
         isUpdating = true
         Log.v("Snake", "Turning")
         for (i in 1..<body.size){
-//            for(coordinate in coordinatesDirectionsToTurn.keys){
-//                if(body[i].currentCoordinate.isNearby(coordinate, margin = 2f)){
-//                    Log.v("Snake", "Turning to: ${coordinatesDirectionsToTurn[coordinate]}")
-//                    body[i].setNewDirection(coordinatesDirectionsToTurn[coordinate]!!)
-//
-//                }
-//                if(body.last().currentCoordinate.isNearby(coordinate, margin = 2f)){
-//                    Log.v("Snake", "Removing $coordinate}")
-//                    coordinatesDirectionsToTurn.remove(coordinate)
-//                }
-//            }
 
             if(body[i].direction != body[i-1].direction && body[i].currentCoordinate.isNearby(coordinatesBeforeTurn, margin = 2f)){
                 Log.v("Snake", "$i is turning")
@@ -129,7 +115,6 @@ class Snake(x: Float, y: Float) {
         if(body.size > 1){
             if(body.first().direction != direction){
                 val currentCoordinate = body.first().currentCoordinate
-//                coordinatesDirectionsToTurn[currentCoordinate] = direction
                 coordinatesBeforeTurn = currentCoordinate
                 startedTurn = true
                 Log.v("Snake", "Coordinates before: $currentCoordinate")
@@ -143,49 +128,12 @@ class Snake(x: Float, y: Float) {
         body.first().render(canvas, initialColor)
          if(body.size>1){
              for (i in 1..<body.size){
-                 renderByDirection(body[i], i, canvas)
+                 renderByDirection(body[i], canvas)
              }
          }
     }
 
-//    private fun renderByPrevious(canvas: Canvas, currentBall: Ball, previousBall: Ball){
-//        var newBallPosition = Coordinate(0f,0f)
-//        val baseX = previousBall.x
-//        val baseY = previousBall.y
-//        if(body.first().direction == Direction.UP){
-//            newBallPosition = Coordinate(baseX, baseY + (35f))
-//        }
-//        if(body.first().direction == Direction.DOWN){
-//            newBallPosition = Coordinate(baseX, baseY - (35f))
-//        }
-//        if(body.first().direction == Direction.RIGHT){
-//            newBallPosition = Coordinate(baseX - (35f ), baseY)
-//        }
-//        if(body.first().direction == Direction.LEFT){
-//            newBallPosition = Coordinate(baseX + (35f) , baseY)
-//        }
-//        currentBall.setNewDirection(previousBall.direction)
-//        currentBall.render(canvas,"#a3e598".toColorInt(), 40f,newBallPosition.x, newBallPosition.y )
-//    }
-
-    private fun renderByDirection(ball: Ball, position: Int, canvas: Canvas){
-//        var newBallPosition = Coordinate(0f,0f)
-//        val baseX = body[position-1].x
-//        val baseY = body[position-1].y
-//        if(ball.direction == Direction.UP){
-//            newBallPosition = Coordinate(baseX, baseY + (45f))
-//        }
-//        if(ball.direction == Direction.DOWN){
-//            newBallPosition = Coordinate(baseX, baseY - (45f))
-//        }
-//        if(ball.direction == Direction.RIGHT){
-//            newBallPosition = Coordinate(baseX - (45f), baseY)
-//        }
-//        if(ball.direction == Direction.LEFT){
-//            newBallPosition = Coordinate(baseX + (45f) , baseY)
-//        }
-//        ball.x = newBallPosition.x
-//        ball.y = newBallPosition.y
+    private fun renderByDirection(ball: Ball, canvas: Canvas){
         ball.render(canvas,"#a3e598".toColorInt(), 50f,ball.x, ball.y )
     }
 }

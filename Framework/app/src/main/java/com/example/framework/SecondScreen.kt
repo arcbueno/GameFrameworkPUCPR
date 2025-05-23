@@ -79,11 +79,6 @@ class SecondScreen(private val game: Game) : Screen(game) {
     override fun handleEvent(event: Int, x: Float, y: Float) {
         val margin = 400f
 
-//        if(lastAction == event){
-//            return
-//        }
-
-
         if (event == MotionEvent.ACTION_DOWN) {
             Log.v("SecondScreen", "Tap in")
             if (exitButton.isInside(x, y)) {
@@ -98,31 +93,6 @@ class SecondScreen(private val game: Game) : Screen(game) {
                 x >= canvas.width - margin -> turnRight()
             }
         }
-//        if(event == MotionEvent.ACTION_MOVE){
-//            Log.v("SecondScreen", "Tap out")
-//            val newCoordinate = Coordinate(x, y)
-//            if (tounchCoordinate != null) {
-//                val deltaX = newCoordinate.x - tounchCoordinate!!.x
-//                val deltaY = newCoordinate.y - tounchCoordinate!!.y
-//
-//                if (abs(deltaX) > abs(deltaY)) {
-//                    if (deltaX > 0) {
-//                        turnRight()
-//                    } else {
-//                        turnLeft()
-//                    }
-//                } else {
-//                    if (deltaY > 0) {
-//                        turnDown()
-//                    } else {
-//                        turnUp()
-//                    }
-//                }
-//            }
-//            // last touch is null to force the user to touch again
-//            // and simulate an slide motion
-//            tounchCoordinate = null
-//        }
 
         lastAction = event
     }

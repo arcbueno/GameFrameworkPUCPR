@@ -14,9 +14,8 @@ class SecondScreen(private val game: Game) : Screen(game) {
     private var points: Int = 0
     private var food: Ball? = null
     private var exitButton: Button
-    private var elapsedTime = 0f
-    private val backgroundColor = Color.BLUE
     private var tounchCoordinate: Coordinate? = null
+    private var lastAction: Int = MotionEvent.INVALID_POINTER_ID
 
     init {
         paint.color = Color.BLUE
@@ -44,7 +43,6 @@ class SecondScreen(private val game: Game) : Screen(game) {
     }
 
     override fun update(et: Float) {
-        elapsedTime = et
         snake.update(et)
     }
 
@@ -79,35 +77,75 @@ class SecondScreen(private val game: Game) : Screen(game) {
     }
 
     override fun handleEvent(event: Int, x: Float, y: Float) {
-//        Log.v("Position y", y.toString())
-//        Log.v("Position x", x.toString())
-        Log.v("TOUCH","onTouch: " + MotionEvent.actionToString(event))
+        val margin = 400f
+
+//        if(lastAction == event){
+//            return
+//        }
+
 
         if (event == MotionEvent.ACTION_DOWN) {
-            tounchCoordinate = Coordinate(x, y)
-        }
-        if(event == MotionEvent.ACTION_MOVE){
-            val newCoordinate = Coordinate(x, y)
-            if (tounchCoordinate != null) {
-                val deltaX = newCoordinate.x - tounchCoordinate!!.x
-                val deltaY = newCoordinate.y - tounchCoordinate!!.y
-
-                if (abs(deltaX) > abs(deltaY)) {
-                    if (deltaX > 0) {
-                        snake.setNewDirection(Direction.RIGHT)
-                    } else {
-                        snake.setNewDirection(Direction.LEFT)
-                    }
-                } else {
-                    if (deltaY > 0) {
-                        snake.setNewDirection(Direction.DOWN)
-                    } else {
-                        snake.setNewDirection(Direction.UP)
-                    }
-                }
+            Log.v("SecondScreen", "Tap in")
+            if (exitButton.isInside(x, y)) {
+                exitButton.onTap()
             }
-            tounchCoordinate = newCoordinate
+            tounchCoordinate = Coordinate(x, y)
+            // Verificações das bordas
+            when {
+                y <= margin -> turnUp()
+                y >= canvas.height - margin -> turnDown()
+                x <= margin -> turnLeft()
+                x >= canvas.width - margin -> turnRight()
+            }
         }
+//        if(event == MotionEvent.ACTION_MOVE){
+//            Log.v("SecondScreen", "Tap out")
+//            val newCoordinate = Coordinate(x, y)
+//            if (tounchCoordinate != null) {
+//                val deltaX = newCoordinate.x - tounchCoordinate!!.x
+//                val deltaY = newCoordinate.y - tounchCoordinate!!.y
+//
+//                if (abs(deltaX) > abs(deltaY)) {
+//                    if (deltaX > 0) {
+//                        turnRight()
+//                    } else {
+//                        turnLeft()
+//                    }
+//                } else {
+//                    if (deltaY > 0) {
+//                        turnDown()
+//                    } else {
+//                        turnUp()
+//                    }
+//                }
+//            }
+//            // last touch is null to force the user to touch again
+//            // and simulate an slide motion
+//            tounchCoordinate = null
+//        }
+
+        lastAction = event
+    }
+
+    private fun turnUp(){
+        if(snake.direction == Direction.DOWN)
+            return
+        snake.setNewDirection(Direction.UP)
+    }
+    private fun turnDown(){
+        if(snake.direction == Direction.UP)
+            return
+        snake.setNewDirection(Direction.DOWN)
+    }
+    private fun turnLeft(){
+        if(snake.direction == Direction.RIGHT)
+            return
+        snake.setNewDirection(Direction.LEFT)
+    }
+    private fun turnRight(){
+        if(snake.direction == Direction.LEFT)
+            return
+        snake.setNewDirection(Direction.RIGHT)
     }
 
     private fun onEat() {
